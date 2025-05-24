@@ -1,0 +1,27 @@
+---
+title: Dalton's Bootstrap Config
+---
+
+distro_packages:
+  ubuntu:
+    - git
+  fedora:
+    - git
+
+# Also should make sure brew is installed before installing the packages
+brew_packages:
+  - gh
+
+git_config:
+  - setting: "user.name"
+    value: "Dalton"
+    global: true
+  - setting: "user.email"
+    value: "daltonstwilliams@gmail.com"
+    global: true
+  - setting: "push.autoSetupRemote"
+    value: true
+    global: true
+  - setting: "init.defaultBranch"
+    value: "main"
+    global: true

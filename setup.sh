@@ -35,13 +35,13 @@ log_message() {
     PASS)  color="${GCol}"; P_level="PASS "; ;;
     WARN)  color="${YCol}"; P_level="WARN "; ;;
     ERROR) color="${RCol}"; P_level="ERROR"; ;;
-    INFO)  color="${BCol}"; P_level="INFO"; ;;
+    INFO)  color="${BCol}"; P_level="INFO "; ;;
     *)     P_level="LOG  "; ;;
   esac
 
-  # Get current timestamp e.g., 2023-10-27 15:30:00
-  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-  echo -e "${color}[${timestamp} ${P_level}] ${message}${NCol}" >&2 # Log to stderr
+  # Get current timestamp e.g., 15:30:00
+  timestamp=$(date '+%H:%M:%S')
+  echo -e "[${timestamp} ${P_level}] ${color}${message}${NCol}" >&2 # Log to stderr
 }
 
 # ~~ Variable setup ~~
@@ -130,7 +130,7 @@ log_message INFO "Starting bootstrap program: ./${BINARY_FILE} ${CONFIG_FILE}"
 (./${BINARY_FILE} ${CONFIG_FILE})
 exit_code=$?
 
-if [ ${exit_code} -ne 0]; then
+if [ ${exit_code} -ne 0 ]; then
 	log_message ERROR "Error occurred in bootstrap program. Failed with exit code ${ exit_code }."
 	exit $exit_code
 fi

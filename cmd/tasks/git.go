@@ -1,22 +1,22 @@
 package tasks
 
 type GitConfig struct {
-	BaseTask `yaml:",inline"`
-	Settings []GitSetting `yaml:"settings"`
+	BaseTask
+	Settings []GitSetting `mapstructure:"settings"`
 }
 
 func (t GitConfig) Execute() error { /* implementation */ return nil }
 
 type GitSetting struct {
-	Setting string `yaml:"setting"`
-	Value   string `yaml:"value"`
-	Global  bool   `yaml:"global,omitempty"`
+	Setting string `mapstructure:"setting"`
+	Value   string `mapstructure:"value"`
+	Global  bool   `mapstructure:"global,omitempty"`
 }
 
 type CloneRepo struct {
-	BaseTask `yaml:",inline"`
-	Source   string `yaml:"src"`
-	Dest     string `yaml:"dest"`
+	BaseTask
+	Source string `mapstructure:"src"`
+	Dest   string `mapstructure:"dest"`
 }
 
 func (t CloneRepo) Execute() error { /* implementation */ return nil }

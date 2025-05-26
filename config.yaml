@@ -1,27 +1,71 @@
 ---
-title: Dalton's Bootstrap Config
----
+tasks:
+  - type: update_distro_packages
+    name: "Updating any distro package manager sources"
 
-distro_packages:
-  ubuntu:
-    - git
-  fedora:
-    - git
+  - type: upgrade_distro_packages
+    name: "Upgrading any distro package manager installed packages"
 
-# Also should make sure brew is installed before installing the packages
-brew_packages:
-  - gh
+  # Install packages for a given distro package manager
+  - type: install_distro_packages
+    name: "Install distro package manager packages"
+    packages:
+      apt:
+        - git
+        - zsh
+        - gh
+      dnf:
+        - git
+      # There are obviously others but I've never used them so... :3
 
-git_config:
-  - setting: "user.name"
-    value: "Dalton"
-    global: true
-  - setting: "user.email"
-    value: "daltonstwilliams@gmail.com"
-    global: true
-  - setting: "push.autoSetupRemote"
-    value: true
-    global: true
-  - setting: "init.defaultBranch"
-    value: "main"
-    global: true
+  - type: install_brew
+    name: "Installing Brew package manager"
+
+  # Also should make sure brew is installed before installing the packages
+  - type: install_brew_packages
+    name: "Install brew packages"
+    packages:
+      - gh
+      - lazygit
+      - zoxide
+      - fd
+      - cloc
+      - hugo
+      - neovim
+      - fastfetch
+      - starship
+
+  # Setup git configuration settings (might also just add .gitconfig to dotfiles config?)
+  - type: git_config
+    name: "Setup git configuration"
+    settings:
+      - setting: "user.name"
+        value: "Dalton"
+        global: true
+      - setting: "user.email"
+        value: "daltonstwilliams@gmail.com"
+        global: true
+      - setting: "push.autoSetupRemote"
+        value: true
+        global: true
+      - setting: "init.defaultBranch"
+        value: "main"
+        global: true
+
+  - type: download_file
+    name: "Get NerdFonts symbols font"
+    src: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/NerdFontsSymbolsOnly.zip"
+    dest: "~/.local/share/fonts/"
+    SHA256: "7f14415832a929155c3d6d1c7d404fae00dfbfe4f1b29940e3736e6e790e3312"
+    extract: true
+
+  - type: clone_repo
+    name: "Clone NeoVim config"
+    src: "git@github.com:DaltonSW/daltvim.git"
+    dest: "~/.config/nvim"
+
+  - type: run_command
+    name: Change default shell to zsh
+    command: "chsh -s $(which zsh)"
+    sudo: false
+

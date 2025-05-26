@@ -1,2 +1,2 @@
 build:
-	go build -o ./bootstrap.x86 bootstrap.go
+	go build -o ./bootstrap.x86 ./cmd/main.go

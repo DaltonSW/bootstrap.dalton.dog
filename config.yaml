@@ -46,7 +46,7 @@ tasks:
         value: "daltonstwilliams@gmail.com"
         global: true
       - setting: "push.autoSetupRemote"
-        value: true
+        value: "true"
         global: true
       - setting: "init.defaultBranch"
         value: "main"

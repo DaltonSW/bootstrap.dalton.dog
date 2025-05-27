@@ -5,6 +5,7 @@ type Task interface {
 	GetType() string
 	GetName() string
 	Execute() error
+	String() string
 }
 
 // BaseTask is the base implementation of the Task interface.

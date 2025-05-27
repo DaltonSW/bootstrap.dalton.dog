@@ -1,4 +1,4 @@
-// main is the bootstrap entry point
+// cmd is the bootstrap entry point
 package cmd
 
 import (
@@ -17,7 +17,7 @@ type RawTaskList struct {
 }
 
 func (r RawTaskList) ConvertToTasks() (*tasks.TaskList, error) {
-	outList := &tasks.TaskList{}
+	outList := new(tasks.TaskList)
 
 	outList.Tasks = make([]tasks.Task, 0)
 
@@ -64,41 +64,43 @@ func (r RawTaskList) ConvertToTasks() (*tasks.TaskList, error) {
 			return nil, err
 		}
 		outList.Tasks = append(outList.Tasks, newTask)
+
 	}
 
 	return outList, nil
 }
 
-func Run() {
+func Run() error {
 	var configFilePath string
 
 	if len(os.Args) != 2 {
 		configFilePath = "config.yaml"
-		// fmt.Println("Usage: setup <config_file_path>")
-		// os.Exit(1)
 	} else {
 		configFilePath = os.Args[1]
 	}
 
 	configBytes, err := os.ReadFile(configFilePath)
 	if err != nil {
-		fmt.Printf("Error reading config file: %v\n", err)
-		os.Exit(1)
+		return err
 	}
 
 	var rawList RawTaskList
 
 	if err = yaml.Unmarshal(configBytes, &rawList); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	taskList, err := rawList.ConvertToTasks()
 
 	if err != nil {
-		log.Fatal(err)
+		return err
+	}
+
+	for i, task := range taskList {
+		fmt.Sprintf("%v. %v", i, task)
 	}
 
 	log.Info(taskList)
 
-	return
+	return nil
 }

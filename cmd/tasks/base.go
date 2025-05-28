@@ -1,5 +1,7 @@
 package tasks
 
+import "go.dalton.dog/setup/cmd/styles"
+
 // Task represents the minimum things a task should be capable of doing.
 type Task interface {
 	GetType() string
@@ -21,6 +23,10 @@ func (t BaseTask) GetType() string { return t.Type }
 // The name is the user's description of the current task.
 func (t BaseTask) GetName() string { return t.Name }
 
+// String returns a styled representation of the task. Can (arguably should) be overridden.
+func (t BaseTask) String() string { return styles.TaskStyle.Render(t.Name) }
+
+// TaskList is a list of tasks to be executed, in order of execution, representing an entire configuration run.
 type TaskList struct {
 	Tasks []Task
 }

@@ -3,6 +3,8 @@ package tasks
 import (
 	"fmt"
 
+	"go.dalton.dog/setup/cmd/styles"
+
 	"github.com/charmbracelet/lipgloss/tree"
 )
 
@@ -12,15 +14,11 @@ type UpdateDistroPackages struct {
 
 func (t UpdateDistroPackages) Execute() error { /* implementation */ return nil }
 
-func (t UpdateDistroPackages) String() string { return t.Name }
-
 type UpgradeDistroPackages struct {
 	BaseTask
 }
 
 func (t UpgradeDistroPackages) Execute() error { /* implementation */ return nil }
-
-func (t UpgradeDistroPackages) String() string { return t.Name }
 
 type InstallBrew struct {
 	BaseTask
@@ -28,16 +26,12 @@ type InstallBrew struct {
 
 func (t InstallBrew) Execute() error { /* implementation */ return nil }
 
-func (t InstallBrew) String() string { return "Installing Linuxbrew" }
-
 type InstallDistroPackages struct {
 	BaseTask
 	Packages map[string][]string `mapstructure:"packages"`
 }
 
 func (t InstallDistroPackages) Execute() error { /* implementation */ return nil }
-
-func (t InstallDistroPackages) String() string { return t.Name }
 
 type InstallBrewPackages struct {
 	BaseTask
@@ -48,9 +42,9 @@ func (t InstallBrewPackages) Execute() error { /* implementation */ return nil }
 
 func (t InstallBrewPackages) String() string {
 	brewTree := tree.New()
-	brewTree.Root(t.Name)
+	brewTree.Root(styles.TaskStyle.Render(t.Name))
 	for _, pkg := range t.Packages {
-		brewTree.Child(pkg)
+		brewTree.Child(styles.CommandStyle.Render(pkg))
 	}
 	return fmt.Sprint(brewTree)
 }

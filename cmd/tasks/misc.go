@@ -1,6 +1,11 @@
 package tasks
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/charmbracelet/lipgloss/tree"
+	"go.dalton.dog/setup/cmd/styles"
+)
 
 type DownloadFile struct {
 	BaseTask
@@ -13,7 +18,15 @@ type DownloadFile struct {
 func (t DownloadFile) Execute() error { /* implementation */ return nil }
 
 func (t DownloadFile) String() string {
-	return fmt.Sprintf("%v\n\t%v -> %v\n\tSHA: %v", t.Name, t.Source, t.Dest, t.SHA256)
+	tree := tree.New()
+	tree.Root(styles.TaskStyle.Render(t.Name)).
+		Child(fmt.Sprintf("SRC: %v", t.Source)).
+		Child(fmt.Sprintf("DST: %v", t.Dest))
+	if t.SHA256 != "" {
+
+		tree.Child(fmt.Sprintf("SHA: %v", t.SHA256))
+	}
+	return fmt.Sprint(tree)
 }
 
 type RunCommand struct {

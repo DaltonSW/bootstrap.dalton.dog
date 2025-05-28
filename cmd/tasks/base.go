@@ -20,3 +20,7 @@ func (t BaseTask) GetType() string { return t.Type }
 // GetName returns the name of the task being run.
 // The name is the user's description of the current task.
 func (t BaseTask) GetName() string { return t.Name }
+
+type TaskList struct {
+	Tasks []Task
+}

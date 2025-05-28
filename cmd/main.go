@@ -2,13 +2,14 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
+	"github.com/charmbracelet/lipgloss/tree"
 	"github.com/charmbracelet/log"
 	"github.com/go-viper/mapstructure/v2"
 	"github.com/goccy/go-yaml"
 	"go.dalton.dog/setup/cmd/tasks"
+	"go.dalton.dog/setup/cmd/utils"
 )
 
 // RawTaskList represents a sequence of tasks to be executed
@@ -96,11 +97,19 @@ func Run() error {
 		return err
 	}
 
-	for i, task := range taskList {
-		fmt.Sprintf("%v. %v", i, task)
+	outTree := tree.New().Root("Configuration Plan")
+
+	for _, task := range taskList.Tasks {
+		outTree.Child(task) // log.Infof("%v. %v\n", i+1, task)
 	}
 
-	log.Info(taskList)
+	log.Infof("\n%v", outTree)
+
+	packageManager, err := utils.DeterminePackageManager()
+	if err != nil {
+		return err
+	}
+	log.Info(packageManager)
 
 	return nil
 }

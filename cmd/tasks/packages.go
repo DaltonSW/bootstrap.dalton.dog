@@ -1,6 +1,10 @@
 package tasks
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/charmbracelet/lipgloss/tree"
+)
 
 type UpdateDistroPackages struct {
 	BaseTask
@@ -8,7 +12,7 @@ type UpdateDistroPackages struct {
 
 func (t UpdateDistroPackages) Execute() error { /* implementation */ return nil }
 
-func (t UpdateDistroPackages) String() string { return "Updating distro package manager sources" }
+func (t UpdateDistroPackages) String() string { return t.Name }
 
 type UpgradeDistroPackages struct {
 	BaseTask
@@ -16,9 +20,7 @@ type UpgradeDistroPackages struct {
 
 func (t UpgradeDistroPackages) Execute() error { /* implementation */ return nil }
 
-func (t UpgradeDistroPackages) String() string {
-	return "Upgrading distro package manager managed packages"
-}
+func (t UpgradeDistroPackages) String() string { return t.Name }
 
 type InstallBrew struct {
 	BaseTask
@@ -35,7 +37,7 @@ type InstallDistroPackages struct {
 
 func (t InstallDistroPackages) Execute() error { /* implementation */ return nil }
 
-func (t InstallDistroPackages) String() string { return "Updating distro package manager sources" }
+func (t InstallDistroPackages) String() string { return t.Name }
 
 type InstallBrewPackages struct {
 	BaseTask
@@ -45,5 +47,10 @@ type InstallBrewPackages struct {
 func (t InstallBrewPackages) Execute() error { /* implementation */ return nil }
 
 func (t InstallBrewPackages) String() string {
-	return fmt.Sprintf("%v\n\t%v", t.Name, t.Packages)
+	brewTree := tree.New()
+	brewTree.Root(t.Name)
+	for _, pkg := range t.Packages {
+		brewTree.Child(pkg)
+	}
+	return fmt.Sprint(brewTree)
 }
